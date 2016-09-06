@@ -20,7 +20,7 @@ su m +N n = su (m +N n)
 
 Nat<= : Cat _<=_
 Nat<= = record { idC = \ {i} -> [ rr i >
-               ; _C&_ = \ { {i} {j} {k} [ ij > [ jk > -> [ tt i j k ij jk > }
+               ; _>>_ = \ { {i} {j} {k} [ ij > [ jk > -> [ tt i j k ij jk > }
                }
   where
   rr : forall n -> n <= n

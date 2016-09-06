@@ -23,9 +23,9 @@ module INDEX {I : Set} where
     BOX T i = ^ (Hom R i -:> T)
 
     box : forall {T i j} -> Hom R i j -> BOX T i -> BOX T j
-    box ij t jk = t (ij C& jk)
+    box ij t jk = t (ij >> jk)
 
     DIA : (I -> Set) -> I -> Set
-    DIA T i = Sg I (Hom R i :* T)
+    DIA T i = % (Hom R i :* T)
 
 open INDEX public

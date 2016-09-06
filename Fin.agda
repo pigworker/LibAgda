@@ -1,6 +1,8 @@
 module LibAgda.Fin where
 
-open import LibAgda.Nat
+open import LibAgda.Nat public
+open import LibAgda.One public
+open import LibAgda.Sg public
 
 data Fin : Nat -> Set where
   ze : {n : Nat} -> Fin (su n)
@@ -15,15 +17,14 @@ _F,_ : forall {l}{X : Set l}{n} -> (Fin n -> X) -> X -> Fin (su n) -> X
 (f F, x) ze      = x
 (f F, x) (su i)  = f i
 
-data Env (X : Set) : Nat -> Set where
-  []    : Env X ze
-  _-,_  : forall {n} -> Env X n -> X -> Env X (su n)
+Env : Nat -> Set -> Set
+Env ze X = One
+Env (su n) X = Env n X * X
 
-env : forall {X Y n} -> (X -> Y) -> Env X n -> Env Y n
-env f []         = []
-env f (xz -, x)  = env f xz -, f x
+env : forall {n X Y} -> (X -> Y) -> Env n X -> Env n Y
+env {ze} f xz = <>
+env {su n} f xz = env {n} f (fst xz) , f (snd xz)
 
-proj : forall {X n} -> Env X n -> Fin n -> X
-proj [] ()
-proj (g -, x) ze     = x
-proj (g -, x) (su i) = proj g i
+proj : forall {X n} -> Fin n -> Env n X -> X
+proj ze     xz = snd xz
+proj (su i) xz = proj i (fst xz)

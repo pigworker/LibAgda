@@ -30,3 +30,11 @@ infixr 4 _+_
 _<+>_ : forall {k l}{S T : Set k}{S' T' : Set l} ->
         (S -> S') -> (T -> T') -> (S + T) -> (S' + T')
 (f <+> g) = sg id \ { {tt} -> f ; {ff} -> g }
+
+record %_ {I : Set}(T : I -> Set) : Set where
+  constructor %[_]
+  field
+    {wit} : I
+    see : T wit
+
+infixl 0 %_
