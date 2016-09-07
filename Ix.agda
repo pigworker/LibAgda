@@ -15,6 +15,13 @@ module INDEX {I : Set} where
   _:*_ : (S T : I -> Set) -> I -> Set
   (S :* T) i = S i * T i
 
+  _:*map_ : forall {S T S' T'} -> (^ S -:> T) -> (^ S' -:> T') ->
+              ^ (S :* S') -:> (T :* T')
+  (f :*map f') (s , s') = f s , f' s'
+
+  %map : forall {S T} -> (^ S -:> T) -> % S -> % T
+  %map f %[ s ] = %[ f s ]
+
   module MODAL {R : I -> I -> Set}(C : Cat R) where
 
     open Cat R C

@@ -8,6 +8,7 @@ open import LibAgda.Sg
 open import LibAgda.Bwd public
 open import LibAgda.Cat
 open import LibAgda.Eq
+open import LibAgda.Ix
 
 data OPE : Bwd X -> Bwd X -> Set where
   zeOPE :                                  OPE []        []        
@@ -91,6 +92,14 @@ ope?proj zeOPE      ()
 ope?proj (suOPE rh) (ze p) (xz , x) = refl
 ope?proj (suOPE rh) (su i) (xz , x) = ope?proj rh i xz
 ope?proj (noOPE rh) i      (xz , x) = ope?proj rh i xz
+
+-- whittling naturality
+
+ope?Natural : forall {P Q m n}(f : ^ P -:> Q)(rh : OPE m n)(xz : [Bwd] P n) ->
+              ope? rh ([bwd] f xz) == [bwd] f (ope? rh xz)
+ope?Natural f zeOPE <> = refl
+ope?Natural f (suOPE rh) (xz , x) = _,_ $= ope?Natural f rh xz =$= refl
+ope?Natural f (noOPE rh) (xz , x) = ope?Natural f rh xz
 
 OPECAT : Cat OPE
 OPECAT = record
